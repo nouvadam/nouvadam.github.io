@@ -3,26 +3,24 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1' name='viewport' />
 		<link rel="stylesheet" href="style.css">
     </head>
     <body>
         <script type="module" src="index.js"></script>
-		
 		<canvas id="hack-canvas" name="hack-canvas"></canvas>
-		
 		<div class="canvas-with-buttons">
-		
 			<div class="vertical-buttons">
 				<button id="up-button" class="button" value="38">↑</button>
 				<div class="mid-buttons">
 					<button id="left-button" class="button" value="37">←</button>
+					<button id="down-button" class="button" value="40">↓</button>
 					<button id="right-button" class="button" value="39">→</button>
 				</div>
-				<button id="down-button" class="button" value="40">↓</button>
 			</div>
 		
 			<div class="mid-controls">
+				<div>
 				 <select name="select_rom" class="select_rom">
 					<option disabled selected value> -- Select ROM -- </option>
 					<option value="Bichromia.hex">Bichromia</option>
@@ -36,17 +34,16 @@
 					<option value="SpeedTest.hex">Speed test</option>
 					<option value="Mortle.hex">Mortle</option>
 				</select>
+				<button id="play-pause-button" class="play-pause-buttons"></button>
+				<button id="reset-button" class="play-pause-buttons"></button>
+				</div>
 				<label for="speed_input">Speed:</label>
 				<input type="text" id="speed_input" name="Speed:" value="200000">
-				<div>
-					<button id="play-pause-button"></button>
-					<button id="reset-button"></button>
-				</div>
 			</div>
 			
 			<div>
 				<button id="return-button" class="button" value="13">&#9166;</button>
-				<button id="space-button" class="button" value="32">__</button>
+				<button id="space-button" class="button" value="32">_</button>
 			</div>
 		</div>
     </body>
