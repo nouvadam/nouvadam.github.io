@@ -147,6 +147,12 @@ export class Hack {
         wasm.hack_tick(this.ptr, how_many_ticks);
     }
     /**
+    *Reset computer state
+    */
+    reset() {
+        wasm.hack_reset(this.ptr);
+    }
+    /**
     * @param {number} input
     */
     set_key(input) {
