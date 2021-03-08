@@ -42,6 +42,14 @@ async function run(rom) {
 	  btn.addEventListener('mouseup', (event) => {
 		 hack.release_key(btn.value); 
 	  });
+	  
+	  btn.addEventListener('touchstart', (event) => {
+		hack.set_key(btn.value);
+	  });
+	  
+	  btn.addEventListener('touchend', (event) => {
+		 hack.release_key(btn.value); 
+	  });
 	});
 	
 	// Play/Pause functionality
