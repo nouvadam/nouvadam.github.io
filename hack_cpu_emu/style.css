@@ -79,6 +79,8 @@ justify-content: space-evenly;
 	width: 20px;
 	height: 20px;
 	vertical-align: top;
+	text-align: center;
+	padding: 0px;
 }
 
 .mid-controls{
@@ -93,8 +95,10 @@ display: none;
 }
 @media only screen and (max-height: 812px) {
 .button {
-  width: 25px;
-  height: 25px;
+  text-align: center;
+  padding: 0px;
+  width: 35px;
+  height: 35px;
   display: block;
   vertical-align:top;
   display: flex;

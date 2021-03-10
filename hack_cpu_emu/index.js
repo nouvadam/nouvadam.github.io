@@ -3,11 +3,11 @@ import {
 	default as init
 } from './wasm_hack.js';
 
-async function run(rom) {
+async function run() {
 	let wasm = await init('./wasm_hack_bg.wasm');
 
 	// Create new cpu emulator
-	const hack = Hack.new(rom);
+	const hack = Hack.new();
 
 	// Init 2d canvas to render Hack screen
 	var canvas = document.getElementById("hack-canvas");
@@ -30,7 +30,7 @@ async function run(rom) {
 		hack.release_key(event.keyCode);
 	});
 	
-	// Init arrow buttons
+	// Init mobile buttons
 	var buttons = document.querySelectorAll('.button');
 
 	buttons.forEach((btn) => {
@@ -52,39 +52,24 @@ async function run(rom) {
 	  });
 	});
 	
-	// Play/Pause functionality
-	let animationId = null;
-	const isPaused = () => {
-		return animationId === null;
-	};
-
-	const playPauseButton = document.getElementById("play-pause-button");
-
-	const play = () => {
-		playPauseButton.textContent = "⏸";
-		renderLoop();
-	};
-
-	const pause = () => {
-		playPauseButton.textContent = "▶";
-		cancelAnimationFrame(animationId);
-		animationId = null;
-	};
-
-	playPauseButton.addEventListener("click", event => {
-		if (isPaused()) {
-			play();
-		} else {
-			pause();
-		}
-	});
-	
 	// Reset functionality
 	const resetButton = document.getElementById("reset-button");
 	resetButton.textContent = "↺";
 	
 	resetButton.addEventListener('click', function(event) {
 		hack.reset();
+	});
+	
+	// Select ROM functionality
+	const select_rom = document.querySelector('.select_rom');
+
+	select_rom.addEventListener('change', (event) => {
+		fetch('rom/' + event.target.value)
+			.then(response => response.text())
+			.then(data => {
+				hack.load_rom(data);
+				hack.reset();
+			});
 	});
 	
 	// Basic renderloop
@@ -95,46 +80,36 @@ async function run(rom) {
 		// Draw Hack screen
 		draw();
 
-		animationId = requestAnimationFrame(renderLoop);
+		requestAnimationFrame(renderLoop);
 	};
 
 	const draw = () => {
 		var canvasWidth = canvas.width;
 		var canvasHeight = canvas.height;
-
+		
+		
 		const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
 		var data = imageData.data;
-
+		
+		// draw Hack screen into its internal buffer with pixels
 		hack.draw();
 
+		// get pointer to buffer with pixels
 		let frame_ptr = hack.frame();
-
+		
+		// Interpret buffer with pixels as JS array
 		const pixels = new Uint8Array(wasm.memory.buffer, frame_ptr, 512 * 256 * 4);
+		
+		// Set this buffer as image in canvas
 		imageData.data.set(pixels);
-
+		
+		// Draw canvas
 		ctx.putImageData(imageData, 0, 0);
 	}
 
 	draw();
-	play();
+	renderLoop();
 }
 
-// Select ROM functionality
-const select_rom = document.querySelector('.select_rom');
-
-select_rom.addEventListener('change', (event) => {
-	fetch('rom/' + event.target.value)
-		.then(response => response.text())
-		.then(data => run(data));
-});
-
-window.addEventListener('click', (event) => {
-
-// Mobile keyboard
-var target = document.getElementById("hack-canvas");
-
-if (event.target != target) {
-	target.focus();
-	target.click();
-}
-});
+// Run whole script
+run()

@@ -131,13 +131,10 @@ export class Hack {
         wasm.__wbg_hack_free(ptr);
     }
     /**
-    * @param {string} file
     * @returns {Hack}
     */
-    static new(file) {
-        var ptr0 = passStringToWasm0(file, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        var ret = wasm.hack_new(ptr0, len0);
+    static new() {
+        var ret = wasm.hack_new();
         return Hack.__wrap(ret);
     }
     /**
@@ -151,6 +148,14 @@ export class Hack {
     */
     reset() {
         wasm.hack_reset(this.ptr);
+    }
+    /**
+    * @param {string} file
+    */
+    load_rom(file) {
+        var ptr0 = passStringToWasm0(file, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.hack_load_rom(this.ptr, ptr0, len0);
     }
     /**
     * @param {number} input
